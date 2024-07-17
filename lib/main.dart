@@ -38,23 +38,30 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final realControlller = TextEditingController();
-  final dolarControlller = TextEditingController();
+  final realController = TextEditingController();
+  final dolarController = TextEditingController();
   final euroController = TextEditingController();
 
   late double dolar;
   late double euro;
+  late double real;
 
   void _realChanged(String text) {
-    print(text);
+    double real = double.parse(text);
+    dolarController.text = (real/dolar).toStringAsFixed(2);
+    euroController.text = (real/euro).toStringAsFixed(2);
   }
 
   void _dolarChanged(String text) {
-    print(text);
+    double dolar = double.parse(text);
+    realController.text = (dolar * this.dolar).toStringAsFixed(2);
+    euroController.text = (dolar * this.dolar / euro).toStringAsFixed(2);
   }
 
   void _euroChanged(String text) {
-    print(text);
+    double euro = double.parse(text);
+    realController.text = (euro * this.euro).toStringAsFixed(2);
+    dolarController.text = (euro * this.euro / dolar).toStringAsFixed(2);
   }
 
   void _atualizarDados(Map data) {
@@ -117,11 +124,11 @@ class _HomeState extends State<Home> {
                         size: 150,
                         color: Colors.amber,
                       ),
-                      buildTextField("Reais", "R\$", realControlller, _realChanged),
+                      buildTextField("Reais", "R\$", realController, _realChanged),
                       const Divider(
                         color: Colors.white,
                       ),
-                      buildTextField("Dólares", "US\$", dolarControlller, _dolarChanged),
+                      buildTextField("Dólares", "US\$", dolarController, _dolarChanged),
                       const Divider(
                         color: Colors.white,
                       ),
