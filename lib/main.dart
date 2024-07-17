@@ -1,6 +1,8 @@
 import "dart:async";
+import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import 'package:currency_conversor/Config.dart';
+import "package:flutter/widgets.dart";
 import "package:http/http.dart" as http;
 import "dart:convert";
 
@@ -36,8 +38,24 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final realControlller = TextEditingController();
+  final dolarControlller = TextEditingController();
+  final euroController = TextEditingController();
+
   late double dolar;
   late double euro;
+
+  void _realChanged(String text) {
+    print(text);
+  }
+
+  void _dolarChanged(String text) {
+    print(text);
+  }
+
+  void _euroChanged(String text) {
+    print(text);
+  }
 
   void _atualizarDados(Map data) {
     setState(() {
@@ -94,41 +112,20 @@ class _HomeState extends State<Home> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.monetization_on,
                         size: 150,
                         color: Colors.amber,
                       ),
-                      TextField(
-                        decoration: InputDecoration(
-                            labelText: "Reais",
-                            labelStyle: TextStyle(color: Colors.amber),
-                            border: OutlineInputBorder(),
-                            prefixText: "R\$"),
-                        style: TextStyle(color: Colors.amber, fontSize: 25),
-                      ),
-                      Divider(
+                      buildTextField("Reais", "R\$", realControlller, _realChanged),
+                      const Divider(
                         color: Colors.white,
                       ),
-                      TextField(
-                        decoration: InputDecoration(
-                            labelText: "Dólares",
-                            labelStyle: TextStyle(color: Colors.amber),
-                            border: OutlineInputBorder(),
-                            prefixText: "US\$"),
-                        style: TextStyle(color: Colors.amber, fontSize: 25),
-                      ),
-                      Divider(
+                      buildTextField("Dólares", "US\$", dolarControlller, _dolarChanged),
+                      const Divider(
                         color: Colors.white,
                       ),
-                      TextField(
-                        decoration: InputDecoration(
-                            labelText: "Euros",
-                            labelStyle: TextStyle(color: Colors.amber),
-                            border: OutlineInputBorder(),
-                            prefixText: "€"),
-                        style: TextStyle(color: Colors.amber, fontSize: 25),
-                      ),
+                      buildTextField("Euros", "€", euroController, _euroChanged),
                     ],
                   ),
                 );
@@ -138,4 +135,21 @@ class _HomeState extends State<Home> {
       ),
     );
   }
+}
+
+Widget buildTextField(
+    String label, String prefix, TextEditingController controller, void Function(String)? onChanged) {
+
+  return TextField(
+    keyboardType: TextInputType.number,
+    decoration: InputDecoration(
+        labelText: label,
+        labelStyle:  TextStyle(color: Colors.amber),
+        border:  OutlineInputBorder(),
+        prefixText: prefix),
+    style:  TextStyle(color: Colors.amber,
+        fontSize: 25),
+    controller: controller,
+    onChanged: onChanged,
+  );
 }
